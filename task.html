@@ -751,23 +751,32 @@
             }
         }
 
-        
-        function sendResultsToServer() {
-            if (resultsSubmitted) {
-                return;
-            }
-
-            const results = {
+        function buildResultsPayload() {
+            return {
                 participant: participantData,
+                secondPartResponse: {
+                    interest: participantData.secondPartInterest ? 'สนใจ' : 'ไม่สนใจ',
+                    contactEmail: participantData.contactEmail || '',
+                    contactPhone: participantData.contactPhone || '',
+                    contactInfo: participantData.contactInfo || ''
+                },
                 vviq: {
                     answers: vviqAnswers,
                     score: vviqAnswers.reduce((sum, answer) => sum + (answer + 1), 0)
                 },
                 silhouette: silhouetteResults,
-                silhouetteTextAnswers: silhouetteTextAnswers, // Include all text answers
-                randomizedObjectOrder: randomizedObjectOrder, // Include the randomized order
+                silhouetteTextAnswers: silhouetteTextAnswers,
+                randomizedObjectOrder: randomizedObjectOrder,
                 timestamp: new Date().toISOString()
             };
+        }
+
+        function sendResultsToServer() {
+            if (resultsSubmitted) {
+                return;
+            }
+
+            const results = buildResultsPayload();
 
             fetch("https://n8n-amalgam.keendev.net/webhook/nithit-circle-thing",
                 {
@@ -849,17 +858,7 @@
 
         // Download results
         function downloadResults() {
-            const results = {
-                participant: participantData,
-                vviq: {
-                    answers: vviqAnswers,
-                    score: vviqAnswers.reduce((sum, answer) => sum + (answer + 1), 0)
-                },
-                silhouette: silhouetteResults,
-                silhouetteTextAnswers: silhouetteTextAnswers, // Include all text answers
-                randomizedObjectOrder: randomizedObjectOrder, // Include the randomized order
-                timestamp: new Date().toISOString()
-            };
+            const results = buildResultsPayload();
             
             const dataStr = JSON.stringify(results, null, 2);
             const dataBlob = new Blob([dataStr], {type: 'application/json'});
