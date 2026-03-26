@@ -318,10 +318,6 @@
             <h1>ข้อมูลผู้เข้าร่วมการวิจัย</h1>
             
             <div class="form-group">
-                <label for="participant-id">Participant ID:</label>
-                <input type="text" id="participant-id" placeholder="Enter your participant ID" required>
-            </div>
-            <div class="form-group">
                 <label for="participant-age">Age:</label>
                 <input type="number" id="participant-age" placeholder="Enter your age" min="18" max="100" required>
             </div>
@@ -536,16 +532,14 @@
 
         // Start the study
         function startStudy() {
-            const participantId = document.getElementById('participant-id').value;
             const participantAge = document.getElementById('participant-age').value;
             
-            if (!participantId || !participantAge) {
-                alert('Please fill in both Participant ID and Age');
+            if (!participantAge) {
+                alert('Please fill in Age');
                 return;
             }
             
             participantData = {
-                id: participantId,
                 age: participantAge,
                 gender: document.getElementById('participant-gender').value,
                 secondPartInterest: null,
