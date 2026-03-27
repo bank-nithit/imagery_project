@@ -316,7 +316,6 @@
         <!-- Participant Information Page -->
         <div id="participant-section" class="section">
             <h1>ข้อมูลผู้เข้าร่วมการวิจัย</h1>
-            
             <div class="form-group">
                 <label for="participant-age">Age:</label>
                 <input type="number" id="participant-age" placeholder="Enter your age" min="18" max="100" required>
@@ -532,6 +531,7 @@
 
         // Start the study
         function startStudy() {
+            const participantId = Date.now();
             const participantAge = document.getElementById('participant-age').value;
             
             if (!participantAge) {
@@ -540,6 +540,7 @@
             }
             
             participantData = {
+                id: participantId,
                 age: participantAge,
                 gender: document.getElementById('participant-gender').value,
                 secondPartInterest: null,
